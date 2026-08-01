@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Good111 Deposit Recovery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #111827;
+            --card-bg: rgba(17, 24, 39, 0.88);
+            --card-border: rgba(234, 179, 8, 0.15);
+            --accent: #eab308;
+            --accent-glow: rgba(234, 179, 8, 0.4);
+            --accent-dark: #a16207;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --bkash-color: #E2136E;
+            --nagad-color: #F6921E;
+            --input-bg: rgba(15, 23, 42, 0.8);
+            --input-border: rgba(100, 116, 139, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans Bengali', sans-serif;
+            background: var(--bg-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bg-layer { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
+        .bg-layer::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background:
+                radial-gradient(ellipse 600px 600px at 20% 30%, rgba(234,179,8,0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 500px 500px at 80% 70%, rgba(234,179,8,0.04) 0%, transparent 70%),
+                radial-gradient(ellipse 400px 400px at 50% 50%, rgba(17,24,39,0.5) 0%, transparent 70%);
+            animation: bgShift 15s ease-in-out infinite;
+        }
+        @keyframes bgShift {
+            0%,100% { transform: translate(0,0) rotate(0deg); }
+            33% { transform: translate(2%,-1%) rotate(1deg); }
+            66% { transform: translate(-1%,2%) rotate(-1deg); }
+        }
+
+        .particles { position: fixed; inset: 0; z-index: 0; }
+        .particle {
+            position: absolute;
+            width: 3px; height: 3px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat linear infinite;
+        }
+        @keyframes particleFloat {
+            0% { opacity:0; transform: translateY(100vh) scale(0); }
+            10% { opacity:0.6; }
+            90% { opacity:0.3; }
+            100% { opacity:0; transform: translateY(-10vh) scale(1); }
+        }
+
+        .grid-overlay {
+            position: fixed; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(234,179,8,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(234,179,8,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridPulse 8s ease-in-out infinite;
+        }
+        @keyframes gridPulse { 0%,100% { opacity:0.5; } 50% { opacity:1; } }
+
+        .main-container {
+            position: relative; z-index: 10;
+            width: 100%; max-width: 440px; padding: 20px;
+        }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 40px 32px;
+            backdrop-filter: blur(20px);
+            box-shadow:
+                0 0 60px rgba(234,179,8,0.05),
+                0 25px 50px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.05);
+            position: relative; overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .card:hover {
+            box-shadow:
+                0 0 80px rgba(234,179,8,0.08),
+                0 30px 60px rgba(0,0,0,0.5),
+                inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+        .card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.8;
+        }
+        .card-glow {
+            position: absolute; top: -100px; right: -100px;
+            width: 250px; height: 250px;
+            background: radial-gradient(circle, rgba(234,179,8,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .logo-section { text-align: center; margin-bottom: 36px; position: relative; }
+        .logo-icon {
+            width: 70px; height: 70px;
+            margin: 0 auto 18px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px; color: var(--bg-primary);
+            box-shadow: 0 8px 30px rgba(234,179,8,0.3);
+            animation: logoFloat 4s ease-in-out infinite;
+            position: relative;
+        }
+        .logo-icon::after {
+            content: '';
+            position: absolute; inset: -3px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--accent), transparent, var(--accent));
+            z-index: -1; opacity: 0.4;
+            animation: logoRotate 6s linear infinite;
+        }
+        @keyframes logoFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        @keyframes logoRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .brand-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 26px; font-weight: 900;
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(234,179,8,0.3);
+            margin-bottom: 6px;
+        }
+        .brand-subtitle {
+            font-size: 14px; color: var(--text-secondary);
+            font-weight: 400; letter-spacing: 3px; text-transform: uppercase;
+        }
+
+        .form-group { margin-bottom: 22px; position: relative; }
+        .form-label {
+            display: block; font-size: 13px; font-weight: 600;
+            color: var(--text-secondary); margin-bottom: 8px; letter-spacing: 0.5px;
+        }
+        .input-wrapper { position: relative; }
+        .input-wrapper i {
+            position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+            color: var(--text-muted); font-size: 16px; transition: color 0.3s ease; z-index: 2;
+        }
+        .form-input {
+            width: 100%; padding: 14px 16px 14px 48px;
+            background: var(--input-bg);
+            border: 1.5px solid var(--input-border);
+            border-radius: 12px;
+            color: var(--text-primary); font-size: 15px;
+            font-family: 'Noto Sans Bengali', sans-serif;
+            outline: none; transition: all 0.3s ease;
+        }
+        .form-input::placeholder { color: var(--text-muted); font-size: 14px; }
+        .form-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(234,179,8,0.12), 0 0 20px rgba(234,179,8,0.05);
+        }
+        .input-wrapper:has(.form-input:focus) i { color: var(--accent); }
+
+        .btn-primary {
+            width: 100%; padding: 15px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: var(--bg-primary); border: none; border-radius: 12px;
+            font-size: 16px; font-weight: 700;
+            font-family: 'Noto Sans Bengali', sans-serif;
+            cursor: pointer; position: relative; overflow: hidden;
+            transition: all 0.3s ease; letter-spacing: 0.5px;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(234,179,8,0.35); }
+        .btn-primary:hover::before { left: 100%; }
+        .btn-primary:active { transform: translateY(0); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .btn-primary .spinner {
+            display: none; width: 20px; height: 20px;
+            border: 2.5px solid rgba(10,14,23,0.3);
+            border-top-color: var(--bg-primary); border-radius: 50%;
+            animation: spin 0.7s linear infinite; margin: 0 auto;
+        }
+        .btn-primary.loading .btn-text { display: none; }
+        .btn-primary.loading .spinner { display: block; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .error-msg {
+            display: none; align-items: center; gap: 8px;
+            padding: 12px 16px;
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.25);
+            border-radius: 10px; color: var(--danger);
+            font-size: 13px; font-weight: 500; margin-bottom: 18px;
+            animation: shakeIn 0.4s ease;
+        }
+        .error-msg.show { display: flex; }
+        @keyframes shakeIn {
+            0%,100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+
+        .payment-page { display: none; animation: fadeSlideIn 0.5s ease; }
+        @keyframes fadeSlideIn { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+
+        .user-welcome {
+            text-align: center; margin-bottom: 24px;
+            padding-bottom: 18px; border-bottom: 1px solid rgba(100,116,139,0.15);
+        }
+        .user-avatar {
+            width: 56px; height: 56px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 12px; font-size: 22px;
+            color: var(--bg-primary); font-weight: 800;
+            box-shadow: 0 4px 15px rgba(234,179,8,0.25);
+        }
+        .welcome-text { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+        .welcome-sub { font-size: 13px; color: var(--text-muted); }
+
+        .amount-box {
+            text-align: center;
+            padding: 22px 20px;
+            background: linear-gradient(135deg, rgba(234,179,8,0.08), rgba(234,179,8,0.02));
+            border: 1.5px solid rgba(234,179,8,0.2);
+            border-radius: 16px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .amount-box::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(234,179,8,0.06) 0%, transparent 60%);
+            animation: amountGlow 4s ease-in-out infinite;
+        }
+        @keyframes amountGlow {
+            0%,100% { opacity: 0.5; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+        .amount-box-label {
+            font-size: 13px; color: var(--text-secondary);
+            margin-bottom: 8px; position: relative; z-index: 1;
+            font-weight: 500;
+        }
+        .amount-box-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 38px; font-weight: 900;
+            color: var(--accent);
+            position: relative; z-index: 1;
+            text-shadow: 0 0 30px rgba(234,179,8,0.3);
+            line-height: 1.2;
+        }
+        .amount-box-value .taka-sign {
+            font-size: 20px;
+            color: var(--text-secondary);
+            font-family: 'Noto Sans Bengali', sans-serif;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+        .amount-box-sub {
+            font-size: 11px; color: var(--text-muted);
+            margin-top: 8px; position: relative; z-index: 1;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+        }
+        .amount-box-sub i { font-size: 10px; color: var(--success); }
+
+        .section-title {
+            font-size: 15px; font-weight: 700; color: var(--text-primary);
+            margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+        }
+        .section-title i { color: var(--accent); font-size: 14px; }
+
+        .payment-options { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
+
+        .payment-card {
+            display: flex; align-items: center; gap: 16px;
+            padding: 20px 22px;
+            background: var(--input-bg);
+            border: 1.5px solid var(--input-border);
+            border-radius: 14px;
+            cursor: pointer; transition: all 0.3s ease;
+            position: relative; overflow: hidden;
+            text-decoration: none;
+        }
+        .payment-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .payment-card.bkash:hover {
+            border-color: var(--bkash-color);
+            box-shadow: 0 0 0 3px rgba(226,19,110,0.15), 0 10px 30px rgba(226,19,110,0.15);
+        }
+        .payment-card.nagad:hover {
+            border-color: var(--nagad-color);
+            box-shadow: 0 0 0 3px rgba(246,146,30,0.15), 0 10px 30px rgba(246,146,30,0.15);
+        }
+        .payment-card:active { transform: translateY(-1px); }
+
+        .payment-logo {
+            width: 54px; height: 54px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 22px; flex-shrink: 0;
+        }
+        .bkash .payment-logo { background: linear-gradient(135deg, var(--bkash-color), #c4115e); color: #fff; }
+        .nagad .payment-logo { background: linear-gradient(135deg, var(--nagad-color), #d47a10); color: #fff; }
+
+        .payment-info { flex: 1; }
+        .payment-name { font-size: 17px; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; }
+        .payment-desc { font-size: 12px; color: var(--text-muted); }
+
+        .payment-arrow {
+            color: var(--text-muted); font-size: 16px;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        .bkash:hover .payment-arrow { color: var(--bkash-color); transform: translateX(4px); }
+        .nagad:hover .payment-arrow { color: var(--nagad-color); transform: translateX(4px); }
+
+        .btn-logout {
+            width: 100%; padding: 13px;
+            background: transparent; color: var(--text-muted);
+            border: 1.5px solid rgba(100,116,139,0.2); border-radius: 12px;
+            font-size: 14px; font-weight: 600;
+            font-family: 'Noto Sans Bengali', sans-serif;
+            cursor: pointer; transition: all 0.3s ease; margin-top: 12px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-logout:hover { color: var(--danger); border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.05); }
+
+        .toast {
+            position: fixed; top: 30px; left: 50%;
+            transform: translateX(-50%) translateY(-120px);
+            padding: 14px 24px; border-radius: 12px;
+            font-size: 14px; font-weight: 600;
+            font-family: 'Noto Sans Bengali', sans-serif;
+            z-index: 1000; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+            display: flex; align-items: center; gap: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .toast.success { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); color: var(--success); }
+        .toast.error { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: var(--danger); }
+
+        .status-bar {
+            display: flex; align-items: center; justify-content: center;
+            gap: 6px; margin-top: 20px; font-size: 12px; color: var(--text-muted);
+        }
+        .status-dot {
+            width: 7px; height: 7px; background: var(--success); border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+            50% { opacity:0.7; box-shadow: 0 0 0 6px rgba(34,197,94,0); }
+        }
+
+        .footer-text { text-align: center; margin-top: 24px; font-size: 12px; color: var(--text-muted); }
+        .footer-text a { color: var(--accent); text-decoration: none; font-weight: 600; transition: color 0.3s ease; }
+        .footer-text a:hover { color: #fbbf24; text-decoration: underline; }
+
+        @media (max-width: 480px) {
+            .card { padding: 32px 22px; border-radius: 16px; }
+            .brand-name { font-size: 22px; }
+            .payment-card { padding: 16px 18px; }
+            .amount-box-value { font-size: 32px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *,*::before,*::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-layer"></div>
+    <div class="grid-overlay"></div>
+    <div class="particles" id="particles"></div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMsg"></span>
+    </div>
+
+    <div class="main-container">
+        <div class="card" id="mainCard">
+            <div class="card-glow"></div>
+
+            <!-- লগইন সেকশন -->
+            <div id="loginSection">
+                <div class="logo-section">
+                    <div class="logo-icon">
+                        <i class="fas fa-shield-halved"></i>
+                    </div>
+                    <div class="brand-name">Good111</div>
+                    <div class="brand-subtitle">Deposit Recovery</div>
+                </div>
+
+                <div class="error-msg" id="errorMsg">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="errorText"></span>
+                </div>
+
+                <form id="loginForm" autocomplete="off">
+                    <div class="form-group">
+                        <label class="form-label" for="username">ইউজারনেম</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input
+                                type="text"
+                                class="form-input"
+                                id="username"
+                                placeholder="আপনার ইউজারনেম লিখুন"
+                                aria-label="ইউজারনেম ইনপুট"
+                                required
+                                spellcheck="false"
+                            >
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="loginBtn">
+                        <span class="btn-text">লগইন করুন</span>
+                        <div class="spinner"></div>
+                    </button>
+                </form>
+
+                <div class="status-bar">
+                    <div class="status-dot"></div>
+                    <span>সিস্টেম সচল আছে</span>
+                </div>
+
+                <div class="footer-text">
+                    সমস্যা হলে <a href="#" onclick="showToast('admin@good111.com এ যোগাযোগ করুন','success'); return false;">সাপোর্ট</a> টিমের সাথে যোগাযোগ করুন
+                </div>
+            </div>
+
+            <!-- পেমেন্ট সেকশন -->
+            <div class="payment-page" id="paymentSection">
+                <div class="user-welcome">
+                    <div class="user-avatar"><i class="fas fa-user-check"></i></div>
+                    <div class="welcome-text">স্বাগতম</div>
+                    <div class="welcome-sub">আপনার ডিপোজিট রিকভারি পেমেন্ট করুন</div>
+                </div>
+
+                <!-- পরিমাণ ডিসপ্লে -->
+                <div class="amount-box">
+                    <div class="amount-box-label">প্রযোজ্য পরিমাণ</div>
+                    <div class="amount-box-value">780<span class="taka-sign">টাকা</span></div>
+                    <div class="amount-box-sub">
+                        <i class="fas fa-circle-check"></i>
+                        নিচের মাধ্যমে পেমেন্ট সম্পন্ন করুন
+                    </div>
+                </div>
+
+                <div class="section-title">
+                    <i class="fas fa-wallet"></i>
+                    পেমেন্ট মেথড নির্বাচন করুন
+                </div>
+
+                <div class="payment-options">
+                    <a class="payment-card bkash" id="bkashLink" href="#" role="button" aria-label="বিকাশ পেমেন্ট">
+                        <div class="payment-logo"><i class="fas fa-bolt"></i></div>
+                        <div class="payment-info">
+                            <div class="payment-name">বিকাশ</div>
+                            <div class="payment-desc">বিকাশ দিয়ে পেমেন্ট করুন</div>
+                        </div>
+                        <div class="payment-arrow"><i class="fas fa-arrow-right"></i></div>
+                    </a>
+
+                    <a class="payment-card nagad" id="nagadLink" href="#" role="button" aria-label="নগদ পেমেন্ট">
+                        <div class="payment-logo"><i class="fas fa-coins"></i></div>
+                        <div class="payment-info">
+                            <div class="payment-name">নগদ</div>
+                            <div class="payment-desc">নগদ দিয়ে পেমেন্ট করুন</div>
+                        </div>
+                        <div class="payment-arrow"><i class="fas fa-arrow-right"></i></div>
+                    </a>
+                </div>
+
+                <button class="btn-logout" id="logoutBtn">
+                    <i class="fas fa-arrow-right-from-bracket"></i>
+                    লগআউট
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            var container = document.getElementById('particles');
+            for (var i = 0; i < 25; i++) {
+                var p = document.createElement('div');
+                p.classList.add('particle');
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDuration = (8 + Math.random() * 12) + 's';
+                p.style.animationDelay = (Math.random() * 10) + 's';
+                var size = (2 + Math.random() * 3) + 'px';
+                p.style.width = size;
+                p.style.height = size;
+                container.appendChild(p);
+            }
+        })();
+
+        var VALID_USERNAME = '01311874195';
+        var BKASH_URL = 'https://168.aaapay1.com/pay/?trackingNumber=P2920260727085859505782';
+        var NAGAD_URL = 'https://axis.worldxpp.com/pay?trackingNumber=6fa272ec-a179-4200-90e4-f18ffb4a6274';
+
+        var loginForm = document.getElementById('loginForm');
+        var usernameInput = document.getElementById('username');
+        var loginBtn = document.getElementById('loginBtn');
+        var errorMsg = document.getElementById('errorMsg');
+        var errorText = document.getElementById('errorText');
+        var loginSection = document.getElementById('loginSection');
+        var paymentSection = document.getElementById('paymentSection');
+        var bkashLink = document.getElementById('bkashLink');
+        var nagadLink = document.getElementById('nagadLink');
+        var logoutBtn = document.getElementById('logoutBtn');
+
+        bkashLink.href = BKASH_URL;
+        bkashLink.target = '_self';
+        nagadLink.href = NAGAD_URL;
+        nagadLink.target = '_self';
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var username = usernameInput.value.trim();
+
+            if (!username) {
+                showError('ইউজারনেম খালি রাখা যাবে না');
+                return;
+            }
+
+            loginBtn.classList.add('loading');
+            loginBtn.disabled = true;
+            errorMsg.classList.remove('show');
+
+            setTimeout(function() {
+                loginBtn.classList.remove('loading');
+                loginBtn.disabled = false;
+
+                if (username === VALID_USERNAME) {
+                    errorMsg.classList.remove('show');
+                    showToast('সফলভাবে লগইন হয়েছে', 'success');
+                    setTimeout(function() {
+                        showPaymentPage();
+                    }, 500);
+                } else {
+                    showError('এই ইউজারনেম দিয়ে অ্যাক্সেস নেই');
+                }
+            }, 1500);
+        });
+
+        function showError(msg) {
+            if (!msg) { errorMsg.classList.remove('show'); return; }
+            errorText.textContent = msg;
+            errorMsg.classList.add('show');
+        }
+
+        function showToast(msg, type) {
+            var toast = document.getElementById('toast');
+            var toastMsg = document.getElementById('toastMsg');
+            var icon = toast.querySelector('i');
+            toastMsg.textContent = msg;
+            toast.className = 'toast ' + type;
+            icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+            toast.classList.add('show');
+            setTimeout(function() { toast.classList.remove('show'); }, 3000);
+        }
+
+        function showPaymentPage() {
+            loginSection.style.display = 'none';
+            paymentSection.style.display = 'block';
+        }
+
+        logoutBtn.addEventListener('click', function() {
+            paymentSection.style.display = 'none';
+            loginSection.style.display = 'block';
+            usernameInput.value = '';
+            showToast('সফলভাবে লগআউট হয়েছে', 'success');
+        });
+    </script>
+</body>
+</html>
