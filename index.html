@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Good111 Account Verify</title>
+    <title>Good111 Deposit Recovery</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
@@ -236,6 +236,43 @@
         }
         .section-title i { color: var(--accent); font-size: 14px; }
 
+        .pending-box {
+            background: rgba(234, 179, 8, 0.08);
+            border: 1.5px solid rgba(234, 179, 8, 0.25);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .pending-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .pending-amount {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: 1px;
+        }
+
+        .min-deposit-note {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--danger);
+            text-align: center;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
         .payment-options { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
 
         .payment-card {
@@ -325,6 +362,7 @@
             .card { padding: 32px 22px; border-radius: 16px; }
             .brand-name { font-size: 22px; }
             .payment-card { padding: 16px 18px; }
+            .pending-amount { font-size: 24px; }
         }
         @media (prefers-reduced-motion: reduce) {
             *,*::before,*::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
@@ -353,7 +391,7 @@
                         <i class="fas fa-shield-halved"></i>
                     </div>
                     <div class="brand-name">Good111</div>
-                    <div class="brand-subtitle">Account Verify</div>
+                    <div class="brand-subtitle">Deposit Recovery</div>
                 </div>
 
                 <div class="error-msg" id="errorMsg">
@@ -388,6 +426,16 @@
 
             <!-- পেমেন্ট সেকশন -->
             <div class="payment-page" id="paymentSection">
+                <div class="pending-box">
+                    <div class="pending-label">পেন্ডিং অ্যামাউন্ট</div>
+                    <div class="pending-amount">৳300.00</div>
+                </div>
+
+                <div class="min-deposit-note">
+                    <i class="fas fa-info-circle"></i>
+                    মিনিমাম ২০০ টাকা ডিপোজিট করুন
+                </div>
+
                 <div class="section-title">
                     <i class="fas fa-wallet"></i>
                     পেমেন্ট মেথড নির্বাচন করুন
